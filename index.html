@@ -1,10 +1,9 @@
-tes
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather Map</title>
+    <title>Peta Cuaca Transportasi</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
         #map {
@@ -13,47 +12,47 @@ tes
     </style>
 </head>
 <body>
-    <p>tes</p>
     <div id="map"></div>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
-        // Initialize the map
-        var map = L.map('map').setView([0, 0], 2); // Centered at the equator for initial view
+        // Inisialisasi peta
+        var map = L.map('map').setView([0, 0], 2); // Diatur pada ekuator untuk tampilan awal
 
-        // Add OpenStreetMap tile layer
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        // Tambahkan lapisan tile OpenStreetMap Transportasi dari Thunderforest
+        var thunderforestApiKey = 'KUNCI_API_THUNDERFOREST_ANDA'; // Gantilah dengan kunci API Thunderforest Anda
+        L.tileLayer('https://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png?apikey=' + thunderforestApiKey, {
+            attribution: '&copy; <a href="https://www.thunderforest.com/">Thunderforest</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> kontributor'
         }).addTo(map);
 
-        // Function to get the user's location
+        // Fungsi untuk mendapatkan lokasi pengguna
         function getLocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showPosition);
             } else {
-                alert("Geolocation is not supported by this browser.");
+                alert("Geolokasi tidak didukung oleh peramban ini.");
             }
         }
 
-        // Function to handle the position once acquired
+        // Fungsi untuk menangani posisi setelah didapatkan
         function showPosition(position) {
             var lat = position.coords.latitude;
             var lon = position.coords.longitude;
-            map.setView([lat, lon], 10); // Zoom into the user's location
+            map.setView([lat, lon], 10); // Perbesar ke lokasi pengguna
             fetchWeatherData(lat, lon);
         }
 
-        // Function to fetch weather data
+        // Fungsi untuk mengambil data cuaca
         function fetchWeatherData(lat, lon) {
-            // Example API call to BMKG or OpenWeatherMap
-            // Use your API endpoint and key
-            var apiKey = 'YOUR_API_KEY';
+            // Contoh panggilan API ke BMKG atau OpenWeatherMap
+            // Gunakan endpoint dan kunci API Anda
+            var apiKey = 'KUNCI_API_OPENWEATHERMAP_ANDA'; // Gantilah dengan kunci API OpenWeatherMap Anda
             var apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`;
 
             fetch(apiUrl)
                 .then(response => response.json())
                 .then(data => {
-                    // Process and display weather data
-                    var weatherInfo = `Weather: ${data.weather[0].description}`;
+                    // Proses dan tampilkan data cuaca
+                    var weatherInfo = `Cuaca: ${data.weather[0].description}`;
                     L.marker([lat, lon]).addTo(map)
                         .bindPopup(weatherInfo)
                         .openPopup();
@@ -61,7 +60,7 @@ tes
                 .catch(error => console.error('Error fetching weather data:', error));
         }
 
-        // Get the user's location when the page loads
+        // Dapatkan lokasi pengguna saat halaman dimuat
         window.onload = getLocation;
     </script>
 </body>
