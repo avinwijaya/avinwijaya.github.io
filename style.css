@@ -1,0 +1,5 @@
+/* Ganti ukuran peta sesuai kebutuhan */
+#map {
+    height: 400px;
+    width: 100%;
+}
