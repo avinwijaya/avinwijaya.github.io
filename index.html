@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avin Map</title>a</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Peta dengan Cuaca</title>
+    <link rel="stylesheet" href="style1.css">
 </head>
 <body>
     <div id="map"></div>
     <div id="weather-info"></div>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBJd0j7OwHYT40NnTvup55bNg2BOh50xJI"></script>
-    <script src="script.js"></script>
+    <!-- Memuat Google Maps JavaScript API dengan async dan defer -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBJd0j7OwHYT40NnTvup55bNg2BOh50xJI&callback=initMap" async defer></script>
+    <script src="script1.js"></script>
 </body>
 </html>
