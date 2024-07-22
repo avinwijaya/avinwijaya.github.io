@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Peta Cuaca</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
     <style>
         #map {
             height: 100vh;
@@ -12,9 +13,9 @@
     </style>
 </head>
 <body>
-    <p>testt</p>
     <div id="map"></div>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
     <script>
         // Inisialisasi peta
         var map = L.map('map').setView([0, 0], 2); // Diatur pada ekuator untuk tampilan awal
@@ -22,6 +23,23 @@
         // Tambahkan lapisan tile OpenStreetMap
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> kontributor'
+        }).addTo(map);
+
+        // Tambahkan kontrol geocoder untuk pencarian lokasi
+        var geocoder = L.Control.geocoder({
+            defaultMarkGeocode: false
+        }).on('markgeocode', function(e) {
+            var bbox = e.geocode.bbox;
+            var poly = L.polygon([
+                bbox.getSouthEast(),
+                bbox.getNorthEast(),
+                bbox.getNorthWest(),
+                bbox.getSouthWest()
+            ]).addTo(map);
+            map.fitBounds(poly.getBounds());
+            var lat = e.geocode.center.lat;
+            var lon = e.geocode.center.lng;
+            fetchWeatherData(lat, lon);
         }).addTo(map);
 
         // Fungsi untuk mendapatkan lokasi pengguna
@@ -52,16 +70,4 @@
                 .then(response => response.json())
                 .then(data => {
                     // Proses dan tampilkan data cuaca
-                    var weatherInfo = `Cuaca: ${data.weather[0].description}`;
-                    L.marker([lat, lon]).addTo(map)
-                        .bindPopup(weatherInfo)
-                        .openPopup();
-                })
-                .catch(error => console.error('Error fetching weather data:', error));
-        }
-
-        // Dapatkan lokasi pengguna saat halaman dimuat
-        window.onload = getLocation;
-    </script>
-</body>
-</html>
+                    var weatherInfo = 
